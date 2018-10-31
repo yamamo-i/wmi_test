@@ -1,0 +1,42 @@
+---
+version: '3.2'
+services:
+  prometheus:
+    container_name: prometheus_server.local
+    image: "local_prom:latest"
+    command: [
+      # "-alertmanager.url=http://alertmanager.local:9093",
+      "--config.file=/etc/config/prometheus.yml",
+      # "-storage.local.retention=${PROMETHEUS_STORAGE_RETENTION}",
+      # "-storage.local.path=${PROMETHEUS_STORAGE_PATH}",
+      "--web.console.libraries=/etc/prometheus/console_libraries",
+      "--web.console.templates=/etc/prometheus/consoles"]
+    ports:
+      - "9090:9090"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "localhost:9090/status"]
+      interval: 1m
+      timeout: 30s
+      retries: 3
+    volumes:
+      - type: bind
+        source: ./config/prometheus.yml
+        target: /etc/config/prometheus.yml
+  # grafana
+  # grafana:
+  #   container_name: grafana.local
+  #   image: "grafana/grafana:latest"
+  #   ports:
+  #     - "3000:3000"
+  #   healthcheck:
+  #     test: ["CMD", "curl", "localhost:3000/login"]
+  #     interval: 1m
+  #     timeout: 30s
+  #     retries: 3
+  #   volumes:
+  #     - type: bind
+  #       source: ./config/grafana.ini
+  #       target: /etc/grafana/grafana.ini
+  #     - type: bind
+  #       source: ${GRAFANA_STORAGE_PATH}
+  #       target: /var/lib/grafana/data
