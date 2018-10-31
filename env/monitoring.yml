@@ -23,20 +23,20 @@ services:
         source: ./config/prometheus.yml
         target: /etc/config/prometheus.yml
   # grafana
-  # grafana:
-  #   container_name: grafana.local
-  #   image: "grafana/grafana:latest"
-  #   ports:
-  #     - "3000:3000"
-  #   healthcheck:
-  #     test: ["CMD", "curl", "localhost:3000/login"]
-  #     interval: 1m
-  #     timeout: 30s
-  #     retries: 3
-  #   volumes:
-  #     - type: bind
-  #       source: ./config/grafana.ini
-  #       target: /etc/grafana/grafana.ini
-  #     - type: bind
-  #       source: ${GRAFANA_STORAGE_PATH}
-  #       target: /var/lib/grafana/data
+  grafana:
+    container_name: grafana.local
+    image: "grafana/grafana:latest"
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "curl", "localhost:3000/login"]
+      interval: 1m
+      timeout: 30s
+      retries: 3
+    volumes:
+      - type: bind
+        source: ./config/grafana.ini
+        target: /etc/grafana/grafana.ini
+      # - type: bind
+      #   source: ${GRAFANA_STORAGE_PATH}
+      #   target: /var/lib/grafana/data
